@@ -25,7 +25,20 @@ set.seed(32323)
 folds=createFolds(spam$type,k = 10, list = TRUE, returnTrain = FALSE)
 sapply(folds,length)
 
+#bootstrapping
 set.seed(32323)
 folds=createResample(y = spam$type, times = 10, list = TRUE)
 sapply(folds,length)
 folds[[1]][1:10]
+
+#time slicing example
+set.seed(32323)
+tme<-1:1000
+#initial window of 20 will be used to predict next 10
+folds=createTimeSlices(tme, initialWindow = 20, horizon = 10)
+sapply(folds,length)
+names(folds)
+folds$train[[1]]
+folds$test[[1]]
+
+
