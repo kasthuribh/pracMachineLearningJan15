@@ -41,4 +41,6 @@ names(folds)
 folds$train[[1]]
 folds$test[[1]]
 
+#week 2 lect 3
+#Training Option
 
