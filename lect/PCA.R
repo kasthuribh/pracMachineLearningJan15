@@ -49,3 +49,28 @@ typeColor <- ((spam$type=="spam")*1+1) #color black if spam, red if ham
 prComp<-prcomp(log10(spam[,-58]+1)) 
 plot(prComp$x[,1],prComp$x[,2], col=typeColor, xlab = "PC1", ylab = "PC2")
 
+#PCA with caret, similar to above
+preProc <- preProcess(log10(spam[,-58]+1), method = "pca", pcaComp = 2)
+spamPC <- predict(preProc, log10(spam[,-58]+1))
+plot(spamPC[,1], spamPC[,2], col=typeColor)
+
+#preprocessing with PCA
+preProc <- preProcess(log10(trainSet[,-58]+1), method="pca", pcaComp=2)
+trainPC <- predict(preProc, log10(trainSet[,-58]+1))
+modelFit <- train(trainSet$type ~ ., method="glm", data=trainPC)
+
+testPC <- predict(preProc, log10(testSet[,-58]+1))
+confusionMatrix(testSet$type, predict(modelFit,testPC))
+
+#Alternatives
+modelFit <- train(trainSet$type ~ ., method = "glm", preProcess="pca", data=trainSet)
+confusionMatrix(testSet$type, predict(modelFit, testSet))
+
+
+
+ 
+
+
+
+
+
